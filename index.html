@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-MZ">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Age verification · 18+</title>
+  <title>Verificação de idade · 18+</title>
 
   <style>
     /* Minimal global reset */
@@ -38,7 +38,7 @@
       transition: transform 0.2s ease;
     }
 
-    /* Small badge – keeps the Mozambique reference but neutral */
+    /* Small badge – Mozambique reference */
     .badge {
       display: inline-block;
       padding: 0.4rem 1rem;
@@ -162,13 +162,6 @@
       letter-spacing: 0.2px;
     }
 
-    /* optional icon / emoji touch */
-    .lock-icon {
-      font-size: 1.8rem;
-      margin-bottom: 0.25rem;
-      opacity: 0.9;
-    }
-
     /* transition message (hidden by default) */
     .transition-message {
       margin-top: 1rem;
@@ -209,30 +202,30 @@
     <div class="badge">🇲🇿 Moçambique · verificação</div>
     
     <!-- Main question prominently -->
-    <div class="question">Are you 18 years and above?</div>
+    <div class="question">Tem 18 anos ou mais?</div>
     
     <p class="hint">
-      Please confirm your age to continue. This quick check helps us provide appropriate content.
+      Confirme a sua idade para continuar. Esta verificação rápida ajuda-nos a fornecer conteúdo apropriado.
     </p>
 
     <!-- Yes / No actions -->
     <div class="actions">
-      <button class="btn-yes" id="yesBtn" aria-label="Yes, I am 18 or older">
-        Yes, I am 18+
+      <button class="btn-yes" id="yesBtn" aria-label="Sim, tenho 18 anos ou mais">
+        Sim, tenho 18+
       </button>
-      <button class="btn-no" id="noBtn" aria-label="No, I am under 18">
-        No, I am under 18
+      <button class="btn-no" id="noBtn" aria-label="Não, tenho menos de 18 anos">
+        Não, tenho menos de 18
       </button>
     </div>
 
     <!-- subtle note -->
     <div class="note">
-      ✓ Takes less than 10 seconds &nbsp;•&nbsp; 🔒 Your privacy is respected
+      ✓ Leva menos de 10 segundos &nbsp;•&nbsp; 🔒 A sua privacidade é respeitada
     </div>
 
     <!-- hidden transition message (shown after click) -->
     <div id="transitionMsg" class="transition-message">
-      ✅ Verified! Redirecting you now…
+      ✅ Verificado! A redirecionar…
     </div>
   </div>
 
@@ -249,7 +242,7 @@
       function goToOffer(sourceTag) {
         // Show transition feedback
         transitionMsg.style.display = 'block';
-        transitionMsg.textContent = '✅ Redirecting you now…';
+        transitionMsg.textContent = '✅ A redirecionar…';
 
         // Disable both buttons to prevent double clicks
         yesBtn.classList.add('disabled');
@@ -259,14 +252,14 @@
 
         // Optional: change label based on the button clicked
         if (sourceTag === 'yes') {
-          yesBtn.textContent = '✓ Verified';
+          yesBtn.textContent = '✓ Verificado';
         } else {
-          noBtn.textContent = '✓ Continuing';
+          noBtn.textContent = '✓ A continuar';
         }
 
         // Build final URL with dynamic placeholders
         let finalUrl = REDIRECT_URL
-          .replace('{SOURCE_ID}', sourceTag === 'yes' ? 'age_18_plus' : 'age_under_18')
+          .replace('{SOURCE_ID}', sourceTag === 'yes' ? 'maior_18' : 'menor_18')
           .replace('{CLICK_ID}', 'click_' + Date.now());
 
         // Redirect after short delay
