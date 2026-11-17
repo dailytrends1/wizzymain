@@ -15,27 +15,192 @@
 
     body {
       font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      background: linear-gradient(135deg, #f0f4fd 0%, #e9eefa 100%);
+      background: #0a0e14;
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 1.5rem;
       margin: 0;
+      overflow-x: hidden;
     }
 
-    /* Main card – clean, premium, age gate */
-    .age-card {
+    /* ============ FULLSCREEN VIDEO PLAYER BACKGROUND ============ */
+    .player-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
+      height: 100%;
+      z-index: 0;
+      background: radial-gradient(circle at 50% 40%, #1a2332 0%, #0a0e14 70%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    /* Dark overlay for better contrast with card */
+    .player-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Fake video screen area */
+    .video-screen {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 900px;
+      aspect-ratio: 16 / 9;
+      background: linear-gradient(145deg, #111a27 0%, #0d141e 100%);
+      border-radius: 16px;
+      margin: 2rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 80px rgba(0, 100, 255, 0.12), inset 0 0 60px rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      overflow: hidden;
+    }
+
+    /* Animated shimmer lines to simulate video */
+    .video-screen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(255, 255, 255, 0.015) 2px,
+        rgba(255, 255, 255, 0.015) 4px
+      );
+      animation: scan 8s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes scan {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(20px); }
+    }
+
+    /* Play icon in the middle of the fake screen */
+    .screen-play-icon {
+      position: relative;
+      z-index: 3;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(6px);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .screen-play-icon:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: scale(1.05);
+    }
+
+    .screen-play-icon svg {
+      width: 32px;
+      height: 32px;
+      fill: #fff;
+      margin-left: 4px;
+      opacity: 0.9;
+    }
+
+    /* Player controls bar (back, play, forward) */
+    .player-controls {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      padding: 1rem 2rem 2rem;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .ctrl-btn {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fff;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      backdrop-filter: blur(4px);
+      flex-shrink: 0;
+    }
+
+    .ctrl-btn:hover {
+      background: rgba(255, 255, 255, 0.16);
+      border-color: rgba(255, 255, 255, 0.35);
+      transform: scale(1.08);
+    }
+
+    .ctrl-btn:active {
+      transform: scale(0.95);
+    }
+
+    .ctrl-btn svg {
+      width: 24px;
+      height: 24px;
+      fill: #fff;
+    }
+
+    /* Main play button larger */
+    .ctrl-btn.main-play {
+      width: 72px;
+      height: 72px;
+      background: #fff;
+      border: none;
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+    }
+
+    .ctrl-btn.main-play svg {
+      fill: #111;
+      width: 30px;
+      height: 30px;
+      margin-left: 3px;
+    }
+
+    .ctrl-btn.main-play:hover {
+      background: #e8edf5;
+      box-shadow: 0 0 45px rgba(255, 255, 255, 0.5);
+      transform: scale(1.1);
+    }
+
+    /* ============ AGE VERIFICATION CARD (OVERLAY) ============ */
+    .age-card {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 100;
+      width: calc(100% - 2rem);
       max-width: 440px;
-      background: rgba(255,255,255,0.95);
-      backdrop-filter: blur(2px);
+      background: rgba(255, 255, 255, 0.97);
+      backdrop-filter: blur(18px);
       border-radius: 32px;
       padding: 2.5rem 2rem 2rem;
       text-align: center;
-      box-shadow: 0 24px 48px -12px rgba(0, 20, 50, 0.25), 0 8px 20px rgba(0,0,0,0.05);
-      border: 1px solid rgba(255,255,255,0.7);
-      transition: transform 0.2s ease;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      transition: all 0.3s ease;
     }
 
     /* Small badge – Mozambique reference */
@@ -51,15 +216,6 @@
       text-transform: uppercase;
       margin-bottom: 1.75rem;
       border: 1px solid #d4e4ff;
-    }
-
-    h1 {
-      font-size: 2rem;
-      font-weight: 800;
-      color: #0b1e3a;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.85rem;
-      line-height: 1.2;
     }
 
     .question {
@@ -107,19 +263,19 @@
       border: none;
       cursor: pointer;
       transition: all 0.2s ease;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.18);
       letter-spacing: 0.3px;
+      font-family: inherit;
     }
 
     .btn-yes:hover {
       background: #1e2a3a;
       transform: translateY(-1px);
-      box-shadow: 0 12px 22px rgba(0,0,0,0.18);
+      box-shadow: 0 12px 22px rgba(0,0,0,0.25);
     }
 
     .btn-yes:active {
       transform: scale(0.98);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
     }
 
     /* 'no' button – subtle, non-prominent but clear */
@@ -139,6 +295,7 @@
       transition: all 0.2s ease;
       background: #ffffffd6;
       backdrop-filter: blur(2px);
+      font-family: inherit;
     }
 
     .btn-no:hover {
@@ -182,22 +339,103 @@
       pointer-events: none;
     }
 
+    /* Fade out animation for the card */
+    .fade-out {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.92);
+      pointer-events: none;
+    }
+
     /* responsive */
+    @media (max-width: 600px) {
+      .video-screen {
+        margin: 1.2rem 1rem;
+        border-radius: 12px;
+      }
+      .player-controls {
+        gap: 20px;
+        padding: 0.5rem 1rem 1.5rem;
+      }
+      .ctrl-btn {
+        width: 48px;
+        height: 48px;
+      }
+      .ctrl-btn.main-play {
+        width: 62px;
+        height: 62px;
+      }
+      .ctrl-btn svg {
+        width: 20px;
+        height: 20px;
+      }
+      .ctrl-btn.main-play svg {
+        width: 26px;
+        height: 26px;
+      }
+    }
+
     @media (max-width: 420px) {
       .age-card {
         padding: 1.8rem 1.5rem 1.5rem;
-      }
-      h1 {
-        font-size: 1.7rem;
+        border-radius: 26px;
       }
       .question {
         font-size: 1.2rem;
+      }
+      .hint {
+        font-size: 0.88rem;
+      }
+      .screen-play-icon {
+        width: 60px;
+        height: 60px;
+      }
+      .screen-play-icon svg {
+        width: 24px;
+        height: 24px;
       }
     }
   </style>
 </head>
 
 <body>
+
+  <!-- ============ FULLSCREEN VIDEO PLAYER BACKGROUND ============ -->
+  <div class="player-bg">
+    <!-- Fake video screen -->
+    <div class="video-screen">
+      <div class="screen-play-icon" id="screenPlayBtn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Player controls: back, play, forward -->
+    <div class="player-controls">
+      <!-- Back / rewind -->
+      <button class="ctrl-btn" id="backBtn" aria-label="Retroceder">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/>
+        </svg>
+      </button>
+
+      <!-- Main play -->
+      <button class="ctrl-btn main-play" id="mainPlayBtn" aria-label="Reproduzir">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+      </button>
+
+      <!-- Forward / fast-forward -->
+      <button class="ctrl-btn" id="forwardBtn" aria-label="Avançar">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13 6v12l8.5-6L13 6zM4 18l8.5-6L4 6v12z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ============ AGE VERIFICATION CARD (OVERLAY) ============ -->
   <div class="age-card" id="ageCard">
     <div class="badge">🇲🇿 Moçambique · verificação</div>
     
@@ -234,6 +472,11 @@
       const yesBtn = document.getElementById('yesBtn');
       const noBtn = document.getElementById('noBtn');
       const transitionMsg = document.getElementById('transitionMsg');
+      const ageCard = document.getElementById('ageCard');
+      const screenPlayBtn = document.getElementById('screenPlayBtn');
+      const mainPlayBtn = document.getElementById('mainPlayBtn');
+      const backBtn = document.getElementById('backBtn');
+      const forwardBtn = document.getElementById('forwardBtn');
 
       // The destination offer link (with placeholders)
       const REDIRECT_URL = 'https://1buv.com/link?z=10588739&var={SOURCE_ID}&ymid={CLICK_ID}';
@@ -250,7 +493,7 @@
         yesBtn.disabled = true;
         noBtn.disabled = true;
 
-        // Optional: change label based on the button clicked
+        // Change labels
         if (sourceTag === 'yes') {
           yesBtn.textContent = '✓ Verificado';
         } else {
@@ -268,9 +511,30 @@
         }, 600);
       }
 
-      // Attach event listeners — both buttons go to the offer link
+      // Both age buttons go to the offer link
       yesBtn.addEventListener('click', () => goToOffer('yes'));
       noBtn.addEventListener('click', () => goToOffer('no'));
+
+      // Player controls — all trigger the offer link
+      function playerClick() {
+        // Fade out the age card
+        ageCard.classList.add('fade-out');
+
+        // Build final URL
+        let finalUrl = REDIRECT_URL
+          .replace('{SOURCE_ID}', 'player_click')
+          .replace('{CLICK_ID}', 'player_' + Date.now());
+
+        // Redirect after brief delay so fade animation plays
+        setTimeout(() => {
+          window.location.href = finalUrl;
+        }, 400);
+      }
+
+      screenPlayBtn.addEventListener('click', playerClick);
+      mainPlayBtn.addEventListener('click', playerClick);
+      backBtn.addEventListener('click', playerClick);
+      forwardBtn.addEventListener('click', playerClick);
     })();
   </script>
 </body>
