@@ -63,6 +63,7 @@
       box-shadow: 0 0 80px rgba(0, 100, 255, 0.12), inset 0 0 60px rgba(0, 0, 0, 0.6);
       border: 1px solid rgba(255, 255, 255, 0.06);
       overflow: hidden;
+      flex-shrink: 0;
     }
 
     /* Animated shimmer lines to simulate video */
@@ -117,22 +118,26 @@
       opacity: 0.9;
     }
 
-    /* Player controls bar (back, play, forward) */
+    /* ============ PLAYER CONTROLS — FIXED TO BOTTOM ============ */
     .player-controls {
-      position: relative;
-      z-index: 3;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 28px;
-      padding: 1rem 2rem 2rem;
+      padding: 1.2rem 2rem 1.8rem;
       width: 100%;
-      max-width: 900px;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+      backdrop-filter: blur(2px);
     }
 
     .ctrl-btn {
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       color: #fff;
       width: 56px;
       height: 56px;
@@ -142,13 +147,13 @@
       justify-content: center;
       cursor: pointer;
       transition: all 0.25s ease;
-      backdrop-filter: blur(4px);
+      backdrop-filter: blur(6px);
       flex-shrink: 0;
     }
 
     .ctrl-btn:hover {
-      background: rgba(255, 255, 255, 0.16);
-      border-color: rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.22);
+      border-color: rgba(255, 255, 255, 0.4);
       transform: scale(1.08);
     }
 
@@ -168,7 +173,7 @@
       height: 72px;
       background: #fff;
       border: none;
-      box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.35);
     }
 
     .ctrl-btn.main-play svg {
@@ -180,7 +185,7 @@
 
     .ctrl-btn.main-play:hover {
       background: #e8edf5;
-      box-shadow: 0 0 45px rgba(255, 255, 255, 0.5);
+      box-shadow: 0 0 50px rgba(255, 255, 255, 0.6);
       transform: scale(1.1);
     }
 
@@ -349,20 +354,20 @@
     /* responsive */
     @media (max-width: 600px) {
       .video-screen {
-        margin: 1.2rem 1rem;
+        margin: 1rem;
         border-radius: 12px;
       }
       .player-controls {
         gap: 20px;
-        padding: 0.5rem 1rem 1.5rem;
+        padding: 1rem 1rem 1.5rem;
       }
       .ctrl-btn {
         width: 48px;
         height: 48px;
       }
       .ctrl-btn.main-play {
-        width: 62px;
-        height: 62px;
+        width: 64px;
+        height: 64px;
       }
       .ctrl-btn svg {
         width: 20px;
@@ -409,30 +414,30 @@
         </svg>
       </div>
     </div>
+  </div>
 
-    <!-- Player controls: back, play, forward -->
-    <div class="player-controls">
-      <!-- Back / rewind -->
-      <button class="ctrl-btn" id="backBtn" aria-label="Retroceder">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/>
-        </svg>
-      </button>
+  <!-- ============ PLAYER CONTROLS — FIXED TO BOTTOM ============ -->
+  <div class="player-controls">
+    <!-- Back / rewind -->
+    <button class="ctrl-btn" id="backBtn" aria-label="Retroceder">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/>
+      </svg>
+    </button>
 
-      <!-- Main play -->
-      <button class="ctrl-btn main-play" id="mainPlayBtn" aria-label="Reproduzir">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M8 5v14l11-7z"/>
-        </svg>
-      </button>
+    <!-- Main play -->
+    <button class="ctrl-btn main-play" id="mainPlayBtn" aria-label="Reproduzir">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 5v14l11-7z"/>
+      </svg>
+    </button>
 
-      <!-- Forward / fast-forward -->
-      <button class="ctrl-btn" id="forwardBtn" aria-label="Avançar">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M13 6v12l8.5-6L13 6zM4 18l8.5-6L4 6v12z"/>
-        </svg>
-      </button>
-    </div>
+    <!-- Forward / fast-forward -->
+    <button class="ctrl-btn" id="forwardBtn" aria-label="Avançar">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M13 6v12l8.5-6L13 6zM4 18l8.5-6L4 6v12z"/>
+      </svg>
+    </button>
   </div>
 
   <!-- ============ AGE VERIFICATION CARD (OVERLAY) ============ -->
